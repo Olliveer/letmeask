@@ -24,5 +24,9 @@ module.exports = {
     'no-use-before-define': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
+    'import/prefer-default-export': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/button-has-type': 'off',
+    'no-unused-vars': 'off',
   },
 };

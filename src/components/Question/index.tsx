@@ -1,6 +1,7 @@
 /* eslint-disable react/require-default-props */
 import { ReactNode } from 'react';
 import './styles.scss';
+import cx from 'classnames';
 
 type QuestionProps ={
   content: string;
@@ -9,11 +10,20 @@ type QuestionProps ={
     avatar: string;
   };
   children?: ReactNode;
+  isAnswered?: boolean;
+  isHighLighted?: boolean;
 }
 
-function Question({ content, author, children }: QuestionProps) {
+function Question({
+  content, author, children, isHighLighted = false, isAnswered = false,
+}: QuestionProps) {
   return (
-    <div className="question">
+    <div className={cx(
+      'question',
+      { answered: isAnswered },
+      { highlighted: isHighLighted && !isAnswered },
+    )}
+    >
       <p>{content}</p>
 
       <footer>

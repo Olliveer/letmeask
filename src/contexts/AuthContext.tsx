@@ -13,6 +13,7 @@ type User = {
 type AuthContextData = {
   user: User | undefined;
   signInWithGoogle(): Promise<void>;
+  signOut(): Promise<void>;
 }
 
 type AuthProviderProps = {
@@ -66,10 +67,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signOut() {
+    await auth.signOut();
+  }
+
   return (
     <AuthContext.Provider value={{
       user,
       signInWithGoogle,
+      signOut,
     }}
     >
       {children}

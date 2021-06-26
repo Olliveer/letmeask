@@ -1,6 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import { database } from '../../services/firebase';
 import { Button } from '../Button';
+import { ShowToast } from '../Toast';
 
 import './styles.scss';
 
@@ -24,7 +25,9 @@ function Modal({
   const history = useHistory();
 
   async function handleDeleteQuestion() {
-    await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).remove().then(() => {
+      ShowToast({ type: 'success', message: 'Question deleted' });
+    });
 
     setIsModalVisible(false);
   }
@@ -32,6 +35,8 @@ function Modal({
   async function handleEndRoom() {
     await database.ref(`rooms/${roomId}`).update({
       endedAt: new Date(),
+    }).then(() => {
+      ShowToast({ type: 'success', message: 'Room deleted' });
     });
 
     history.push('/');

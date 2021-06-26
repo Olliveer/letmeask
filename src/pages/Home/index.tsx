@@ -4,6 +4,7 @@ import googleIconImg from '../../assets/images/google-icon.svg';
 import illustrationImg from '../../assets/images/illustration.svg';
 import logoImg from '../../assets/images/logo.svg';
 import { Button } from '../../components/Button';
+import ToastAnimated, { ShowToast } from '../../components/Toast';
 import { useAuth } from '../../hooks/useAuth';
 import { database } from '../../services/firebase';
 import './styles.scss';
@@ -31,13 +32,12 @@ export function Home() {
     const roomRef = database.ref(`rooms/${roomCode}`).get();
 
     if (!(await roomRef).exists()) {
-      // eslint-disable-next-line no-alert
-      alert('Room does not exists');
+      ShowToast({ type: 'error', message: 'Room does not exists' });
       return;
     }
 
-    if ((await roomRef).val().endAt) {
-      alert('Room already closed');
+    if ((await roomRef).val().endedAt) {
+      ShowToast({ type: 'error', message: 'Room already closed' });
       return;
     }
 
@@ -46,6 +46,7 @@ export function Home() {
 
   return (
     <div id="page-auth">
+      <ToastAnimated />
       <aside>
         <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
 

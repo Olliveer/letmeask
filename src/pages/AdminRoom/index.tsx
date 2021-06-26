@@ -9,6 +9,8 @@ import { Button } from '../../components/Button';
 import { Modal } from '../../components/Modal';
 import { Question } from '../../components/Question';
 import { RoomCode } from '../../components/RoomCode';
+import ToastAnimated, { ShowToast } from '../../components/Toast';
+
 import { useRoom } from '../../hooks/useRoom';
 import { database } from '../../services/firebase';
 import './styles.scss';
@@ -63,6 +65,7 @@ function AdminRoom() { // const { user } = useAuth();
         />
       )}
       <div id="page-room">
+        <ToastAnimated />
         <header>
           <div className="content">
             <img src={logoImg} alt="Logo letmeask" />

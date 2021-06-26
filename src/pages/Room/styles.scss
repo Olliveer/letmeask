@@ -13,12 +13,25 @@
       > img {
         max-height: 45px;
       }
+
+      @media (max-width: 425px) {
+        flex-direction: column;
+        gap: 10px;
+      }
     }
   }
 
   main {
     max-width: 800px;
     margin: 0 auto;
+
+    @media (max-width: 425px) {
+      padding: 10px;
+    }
+
+    @media (max-width: 810px) {
+      padding: 10px;
+    }
 
     .room-title {
       margin: 32px 0 24px;

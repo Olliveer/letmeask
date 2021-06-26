@@ -1,34 +1,35 @@
-import { useEffect, FormEvent, useState } from 'react';
-
+import { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import logoImg from '../../assets/images/logo.svg';
-import deleteImg from '../../assets/images/delete.svg';
-import checkImg from '../../assets/images/check.svg';
 import answerImg from '../../assets/images/answer.svg';
-
-import './styles.scss';
-import { useAuth } from '../../hooks/useAuth';
+import checkImg from '../../assets/images/check.svg';
+import deleteImg from '../../assets/images/delete.svg';
+import deleteQuestion from '../../assets/images/deleteQuestion.svg';
+import logoImg from '../../assets/images/logo.svg';
+import { Button } from '../../components/Button';
+import { Modal } from '../../components/Modal';
+import { Question } from '../../components/Question';
+import { RoomCode } from '../../components/RoomCode';
 import { useRoom } from '../../hooks/useRoom';
 import { database } from '../../services/firebase';
-import { RoomCode } from '../../components/RoomCode';
-import { Button } from '../../components/Button';
-import { Question } from '../../components/Question';
+import './styles.scss';
 
 type RoomParams = {
   id: string;
 }
 
-function AdminRoom() {
-  // const { user } = useAuth();
+function AdminRoom() { // const { user } = useAuth();
   const history = useHistory();
   const params = useParams<RoomParams>();
   const roomId = params.id;
   const { questions, title } = useRoom(roomId);
+  const [openModal, setOpenModal] = useState(false);
+  const [questionModalId, setQuestionModalId] = useState('');
+  const [modalType, setModalType] = useState('');
 
   async function handleDeleteQuestion(questionId: string) {
-    if (window.confirm('Tem certeza que deseja excluir essa pergunta?')) {
-      await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
-    }
+    setModalType('delete');
+    setQuestionModalId(questionId);
+    setOpenModal(true);
   }
 
   async function handleCheckQuestionAsAnswered(questionId: string) {
@@ -44,56 +45,65 @@ function AdminRoom() {
   }
 
   async function handleEndRoom() {
-    await database.ref(`rooms/${roomId}`).update({
-      endedAt: new Date(),
-    });
-
-    history.push('/');
+    setModalType('finish');
+    setOpenModal(true);
+    setModalType('finish');
   }
 
   return (
-    <div id="page-room">
-      <header>
-        <div className="content">
-          <img src={logoImg} alt="Logo letmeask" />
-          <div>
-            <RoomCode code={roomId} />
-            <Button
-              isOutlined
-              onClick={handleEndRoom}
-            >
-              Encerrar sala
-            </Button>
+    <>
+      {openModal && (
+        <Modal
+          isModalVisible={openModal}
+          setIsModalVisible={setOpenModal}
+          imgURL={deleteQuestion}
+          questionId={questionModalId}
+          roomId={roomId}
+          type={modalType}
+        />
+      )}
+      <div id="page-room">
+        <header>
+          <div className="content">
+            <img src={logoImg} alt="Logo letmeask" />
+            <div>
+              <RoomCode code={roomId} />
+              <Button
+                isOutlined
+                onClick={handleEndRoom}
+              >
+                Encerrar sala
+              </Button>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main>
-        <div className="room-title">
-          <h1>
-            Sala
-            {' '}
-            {title}
-          </h1>
-          {questions.length > 0 && (
-          <span>
-            {questions.length}
-            {' '}
-            pergunta(s)
-          </span>
-          )}
-        </div>
+        <main>
+          <div className="room-title">
+            <h1>
+              Sala
+              {' '}
+              {title}
+            </h1>
+            {questions.length > 0 && (
+            <span>
+              {questions.length}
+              {' '}
+              pergunta(s)
+            </span>
+            )}
+          </div>
 
-        <div className="question-list">
-          {questions.map((question) => (
-            <Question
-              key={question.id}
-              author={question.author}
-              content={question.content}
-              isAnswered={question.isAnswered}
-              isHighLighted={question.isHighLighted}
-            >
-              {!question.isAnswered && (
+          <div className="question-list">
+            {questions.map((question) => (
+              <Question
+                key={question.id}
+                author={question.author}
+                content={question.content}
+                isAnswered={question.isAnswered}
+                isHighLighted={question.isHighLighted}
+              >
+                {!question.isAnswered && (
                 <>
                   <button
                     type="button"
@@ -109,19 +119,23 @@ function AdminRoom() {
                     <img src={answerImg} alt="Dar destaque à pergunta" />
                   </button>
                 </>
-              )}
+                )}
 
-              <button
-                type="button"
-                onClick={() => handleDeleteQuestion(question.id)}
-              >
-                <img src={deleteImg} alt="Remover pergunta" />
-              </button>
-            </Question>
-          ))}
-        </div>
-      </main>
-    </div>
+                <button
+                  type="button"
+                  onClick={() => handleDeleteQuestion(question.id)}
+                >
+                  <img src={deleteImg} alt="Remover pergunta" />
+                </button>
+              </Question>
+            ))}
+          </div>
+        </main>
+        {/* () => handleDeleteQuestion(question.id) */}
+
+      </div>
+
+    </>
   );
 }
 

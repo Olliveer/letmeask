@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { ButtonHTMLAttributes } from 'react';
 
-import '../styles/button.scss';
+import './styles.scss';
 
 type PropsButton = ButtonHTMLAttributes<HTMLButtonElement> & {
   // eslint-disable-next-line react/require-default-props

@@ -10,8 +10,18 @@
       justify-content: space-between;
       align-items: center;
 
+      @media (max-width: 605px) {
+        flex-direction: column;
+      }
+
       > img {
         max-height: 45px;
+      }
+
+      @media (max-width: 605px) {
+        img {
+          display: none;
+        }
       }
 
       > div {
@@ -20,6 +30,12 @@
 
         button {
           height: 40px;
+        }
+      }
+
+      @media (max-width: 425px) {
+        div {
+          flex-direction: column;
         }
       }
     }

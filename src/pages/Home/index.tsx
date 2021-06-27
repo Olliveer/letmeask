@@ -6,6 +6,7 @@ import logoImg from '../../assets/images/logo.svg';
 import { Button } from '../../components/Button';
 import ToastAnimated, { ShowToast } from '../../components/Toast';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../hooks/useTheme';
 import { database } from '../../services/firebase';
 import './styles.scss';
 
@@ -13,6 +14,7 @@ export function Home() {
   const { signInWithGoogle, user } = useAuth();
   const history = useHistory();
   const [roomCode, setRoomCode] = useState('');
+  const { theme } = useTheme();
 
   async function handleCreateRoom() {
     if (!user) {
@@ -45,7 +47,7 @@ export function Home() {
   }
 
   return (
-    <div id="page-auth">
+    <div id="page-auth" className={theme}>
       <ToastAnimated />
       <aside>
         <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />

@@ -8,6 +8,10 @@ import { useRoom } from '../../hooks/useRoom';
 import { database } from '../../services/firebase';
 import logoImg from '../../assets/images/logo.svg';
 import './styles.scss';
+import { useTheme } from '../../hooks/useTheme';
+
+import sun from '../../assets/images/sun.svg';
+import moon from '../../assets/images/moon.svg';
 
 type RoomParams = {
   id: string;
@@ -20,6 +24,8 @@ function Room() {
   const roomId = params.id;
   const [newQuestion, setNewQuestion] = useState('');
   const { questions, title } = useRoom(roomId);
+
+  const { theme, toggleTheme } = useTheme();
 
   async function handSendQuestion(event: FormEvent) {
     event.preventDefault();
@@ -62,7 +68,7 @@ function Room() {
   }
 
   return (
-    <div id="page-room">
+    <div id="page-room" className={theme}>
       <header>
         <div className="content">
           <img src={logoImg} alt="Logo letmeask" />
@@ -74,11 +80,15 @@ function Room() {
             Sair
           </Button>
           )}
+
+          <button onClick={toggleTheme} className="button-theme">
+            <img src={(theme === 'light') ? sun : moon} alt="Buttom theme" />
+          </button>
         </div>
       </header>
 
       <main>
-        <div className="room-title">
+        <div className={`room-title ${theme}`}>
           <h1>
             Sala
             {' '}
@@ -100,7 +110,7 @@ function Room() {
             value={newQuestion}
           />
 
-          <div className="form-footer">
+          <div className={`form-footer ${theme}`}>
             {user ? (
               <div className="user-info">
                 <img src={user.avatar} alt={user.name} />

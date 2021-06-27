@@ -1,4 +1,13 @@
 #page-room {
+  height: 100vh;
+
+  &.dark {
+    background-color: #333;
+    h1 {
+      color: #fff;
+    }
+  }
+
   header {
     padding: 24px;
     border-bottom: 1px solid #e2e2e2;
@@ -9,6 +18,27 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      .button-theme {
+        height: 50px;
+        border-radius: 8px;
+        font-weight: 500;
+        background: transparent;
+        color: #fff;
+        padding: 0 32px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+        border: 0;
+
+        img {
+          width: 44px;
+          height: 44px;
+        }
+      }
 
       > img {
         max-height: 45px;
@@ -37,6 +67,12 @@
       margin: 32px 0 24px;
       display: flex;
       align-items: center;
+
+      &.dark {
+        h1 {
+          color: #fff;
+        }
+      }
 
       h1 {
         font-family: "Poppins", sans-serif;
@@ -72,6 +108,14 @@
         justify-content: space-between;
         align-items: center;
         margin-top: 16px;
+
+        &.dark {
+          .user-info {
+            span {
+              color: #fff;
+            }
+          }
+        }
 
         .user-info {
           display: flex;

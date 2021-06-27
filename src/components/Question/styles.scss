@@ -4,6 +4,10 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
   padding: 24px;
 
+  &.dark {
+    background: #fff;
+  }
+
   & + .question {
     margin-top: 8px;
   }
@@ -34,6 +38,12 @@
     .user-info {
       display: flex;
       align-items: center;
+
+      &.dark {
+        span {
+          color: #29292e;
+        }
+      }
 
       img {
         width: 32px;

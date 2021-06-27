@@ -15,18 +15,25 @@ import { useRoom } from '../../hooks/useRoom';
 import { database } from '../../services/firebase';
 import './styles.scss';
 
+import sun from '../../assets/images/sun.svg';
+import moon from '../../assets/images/moon.svg';
+import { useTheme } from '../../hooks/useTheme';
+import { useAuth } from '../../hooks/useAuth';
+
 type RoomParams = {
   id: string;
 }
 
-function AdminRoom() { // const { user } = useAuth();
+function AdminRoom() {
   const history = useHistory();
+  const { user, signOut } = useAuth();
   const params = useParams<RoomParams>();
   const roomId = params.id;
   const { questions, title } = useRoom(roomId);
   const [openModal, setOpenModal] = useState(false);
   const [questionModalId, setQuestionModalId] = useState('');
   const [modalType, setModalType] = useState('');
+  const { theme, toggleTheme } = useTheme();
 
   async function handleDeleteQuestion(questionId: string) {
     setModalType('delete');
@@ -52,6 +59,11 @@ function AdminRoom() { // const { user } = useAuth();
     setModalType('finish');
   }
 
+  async function handleLogOut() {
+    await signOut();
+    history.push('/');
+  }
+
   return (
     <>
       {openModal && (
@@ -64,7 +76,7 @@ function AdminRoom() { // const { user } = useAuth();
           type={modalType}
         />
       )}
-      <div id="page-room">
+      <div id="page-room" className={theme}>
         <ToastAnimated />
         <header>
           <div className="content">
@@ -77,12 +89,23 @@ function AdminRoom() { // const { user } = useAuth();
               >
                 Encerrar sala
               </Button>
+              {user && (
+              <Button
+                onClick={handleLogOut}
+              >
+                Sair
+              </Button>
+              )}
+
+              <button onClick={toggleTheme} className="button-theme">
+                <img src={(theme === 'light') ? sun : moon} alt="Buttom theme" />
+              </button>
             </div>
           </div>
         </header>
 
         <main>
-          <div className="room-title">
+          <div className={`room-title ${theme}`}>
             <h1>
               Sala
               {' '}
@@ -134,8 +157,6 @@ function AdminRoom() { // const { user } = useAuth();
             ))}
           </div>
         </main>
-        {/* () => handleDeleteQuestion(question.id) */}
-
       </div>
 
     </>

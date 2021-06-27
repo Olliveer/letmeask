@@ -68,6 +68,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signOut() {
+    localStorage.removeItem('firebase:host:letmeask-74ffa-default-rtdb.firebaseio.com');
     await auth.signOut();
   }
 
